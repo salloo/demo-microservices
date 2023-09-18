@@ -11,11 +11,8 @@ public class PostContext : DbContext
 
     public DbSet<Post> Posts { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     }
-
-
 }
