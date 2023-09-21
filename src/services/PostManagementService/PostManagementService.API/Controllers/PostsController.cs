@@ -84,7 +84,7 @@ public class PostsController : ControllerBase
         return Ok("created");
     }
 
-    // update post comments
+    // update post  and comment
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePost([FromBody] UpdatePostCommand command)
