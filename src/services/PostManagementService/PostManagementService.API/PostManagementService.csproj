@@ -7,15 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="RabbitMQ.Client" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\EventBus\RabbitMQ\RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructure\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>

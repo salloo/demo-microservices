@@ -1,11 +1,11 @@
 
 using CommentManagementService.Commands;
-using CommentService.Model;
+using CommentManagementService.Model;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-namespace CommentService.Controllers;
+namespace CommentManagementService.Controllers;
 
 
 [ApiController]
@@ -37,6 +37,11 @@ public class CommentsController: ControllerBase
 
     [HttpPost("{postId}")]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand command)
+    {
+        return Ok();
+    }
+
+    public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentCommand command)
     {
         return Ok();
     }

@@ -5,11 +5,9 @@ using MediatR;
 
 namespace CommentManagementService.Commands;
 
-public class CreateCommentCommand: IRequest<bool>
+public class UpdateCommentCommand: IRequest<bool>
 {
-    [DataMember]
     public string PostId { get; set; }
+    public string CommentId { get; set; } // comment to update
 
-    [DataMember]
-    public string Comment { get; set; }
 }

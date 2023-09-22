@@ -1,4 +1,5 @@
 
+using Empower.Infrastructure.EventBus.Interfaces;
 using PostManagementService.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var eventBus = app.Services.GetRequiredService<IEventBus>();
 
 app.UseHttpsRedirection();
 

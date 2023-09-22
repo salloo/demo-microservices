@@ -1,4 +1,4 @@
-namespace CommentService.Model;
+namespace CommentManagementService.Model;
 
 public class Comment
 {

@@ -63,8 +63,6 @@ public class PostsController : ControllerBase
             }
         }
 
-        // return data
-
         // Have to include blog posts
         return Ok(result);
     }
@@ -72,7 +70,7 @@ public class PostsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreatePostAsync([FromBody]  CreatePostCommand command)
     {
-        if (command == null) return BadRequest("Invalid object");
+        if (command == null) return BadRequest("missing data");
         _logger.LogInformation("Sending command CreatePostCommand");
         bool commandResult = await _mediator.Send(command);
         
@@ -86,11 +84,36 @@ public class PostsController : ControllerBase
 
     // update post  and comment
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePost([FromBody] UpdatePostCommand command)
+    //[HttpPut("{id}")]
+    //public async Task<IActionResult> UpdatePost([FromBody] UpdatePostCommand command)
+    //{
+    //    // send command over Event bus
+    //    if (command == null) return BadRequest("missing data");
+    //    _logger.LogInformation("Sending command CreatePostCommand");
+    //    
+    //    bool commandResult = await _mediator.Send(command);
+    //    
+    //    if (!commandResult)
+    //    {
+    //        return BadRequest();
+    //    }
+
+    //    return Ok("updated");
+    //}
+
+    [HttpDelete]
+    public async Task<IActionResult> DeletePost([FromBody] DeletePostCommand command)
     {
-        // send command over Event bus
-        return Ok();
+        if (command == null) return BadRequest("missing data");
+        _logger.LogInformation("Sending command CreatePostCommand");
+        bool commandResult = await _mediator.Send(command);
+        
+        if (!commandResult)
+        {
+            return BadRequest();
+        }
+
+        return Ok("deleted post");
     }
 
 }
