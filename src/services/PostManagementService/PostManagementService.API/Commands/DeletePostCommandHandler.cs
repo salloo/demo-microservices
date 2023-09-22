@@ -25,6 +25,7 @@ public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, bool>
         
         try
         {
+            _logger.LogInformation("publishing to eventbus");
             _eventBus.Publish(eventMessage);
         }
         catch (Exception ex)

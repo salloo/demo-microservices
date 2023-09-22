@@ -1,6 +1,5 @@
 using CommentManagementService.Commands;
 using MediatR;
-using CommentManagementService.Commands;
 using CommentManagementService.Model;
 
 
