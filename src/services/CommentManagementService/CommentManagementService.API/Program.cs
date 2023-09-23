@@ -52,4 +52,10 @@ app.MapControllers();
 
 eventBus.Subscribe<DeletePostEvent, IIntegrationEventHandler<DeletePostEvent>>();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<CommentContext>();
+    await context.Database.MigrateAsync();
+}
+
 app.Run();

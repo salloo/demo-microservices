@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+    sqldata:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      environment:
+        - SA_PASSWORD=Pass@word
+        - ACCEPT_EULA=Y
+      ports:
+        - 5433:1433
+      volumes:
+      - empower-sqldata:/var/opt/mssql
+
+    rabbitmq:
+      image: rabbitmq:3-management-alpine
+      ports:
+      - 5672:5672
+
+    postservice-api:
+      build:
+        context: .
+        dockerfile: Services/PostManagementService/PostManagementService.API/Dockerfile
+      ports:
+        - 5429:80
+      environment:
+        - ConnectionStrings__PostDB=Server=sqldata;Initial Catalog=PostDB;User Id=sa;Password=Pass@word;Encrypt=false
+        - CommentServiceUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5055
+        - ConnectionStrings__EventBus=${ESHOP_EXTERNAL_DNS_NAME_OR_IP}
+        - EventBus__SubscriptionClientName=Post
+        - EventBus__RetryCount=5
+      depends_on:
+        - rabbitmq
+        - sqldata
+
+    commentservice-api:
+      build:
+        context: .
+        dockerfile: Services/CommentManagementService/CommentManagementService.API/Dockerfile
+      ports:
+        - 5055:80
+      environment:
+        - ConnectionStrings__CommentDB=Server=sqldata;Initial Catalog=CommentDB;User Id=sa;Password=Pass@word;Encrypt=false
+        - ConnectionStrings__EventBus=${ESHOP_EXTERNAL_DNS_NAME_OR_IP}
+        - EventBus__SubscriptionClientName=Comment
+        - EventBus__RetryCount=5
+      depends_on:
+        - rabbitmq
+        - sqldata
+volumes:
+  empower-sqldata:
+    external: false

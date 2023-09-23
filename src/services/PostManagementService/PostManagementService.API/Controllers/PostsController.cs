@@ -17,14 +17,17 @@ public class PostsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly ILogger<PostsController> _logger;
     private readonly IPostRepository _repository;
+    private readonly IConfiguration _configuration;
     
     public PostsController(IMediator mediator, 
         ILogger<PostsController> logger,
-        IPostRepository repository)
+        IPostRepository repository,
+        IConfiguration configuration)
     {
         _mediator = mediator;
         _logger = logger;
         _repository = repository;
+        _configuration = configuration;
         
     }
 
@@ -32,7 +35,7 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> GetPostsByIdAsync(string postId)    
     {
         if (!Guid.TryParse(postId, out Guid postIdd)) return BadRequest("Invalid id format");
-        var commentServiceUrl = $"http://localhost:5055/api/comments/{postId}";
+        var commentServiceUrl = $"{_configuration["CommentServiceUrl"]}/api/comments/{postId}"; //$"http://localhost:5055/api/comments/{postId}";
 
         var result = await _repository.GetPostAsync(postId);
 
