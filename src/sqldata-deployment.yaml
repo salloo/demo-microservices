@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sqldata
+  name: sqldata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: sqldata
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sqldata
+    spec:
+      containers:
+        - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: Pass@word
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          name: sqldata
+          ports:
+            - containerPort: 1433
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/opt/mssql
+              name: empower-sqldata
+      restartPolicy: Always
+      volumes:
+        - name: empower-sqldata
+          persistentVolumeClaim:
+            claimName: empower-sqldata
+status: {}

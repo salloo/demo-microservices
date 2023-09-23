@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: commentservice-api
+  name: commentservice-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: commentservice-api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: commentservice-api
+    spec:
+      containers:
+        - env:
+            - name: ConnectionStrings__CommentDB
+              value: Server=sqldata;Initial Catalog=CommentDB;User Id=sa;Password=Pass@word;Encrypt=false
+            - name: ConnectionStrings__EventBus
+            - name: EventBus__RetryCount
+              value: "5"
+            - name: EventBus__SubscriptionClientName
+              value: Comment
+          image: commentservice-api
+          name: commentservice-api
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
