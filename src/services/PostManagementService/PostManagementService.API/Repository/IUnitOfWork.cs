@@ -1,4 +1,4 @@
-namespace PostManagementService.Data;
+namespace PostManagementService.Repository;
 
 public interface IUnitOfWork: IDisposable
 {

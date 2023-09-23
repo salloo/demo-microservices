@@ -34,7 +34,7 @@ public class PostsController : ControllerBase
         if (!Guid.TryParse(postId, out Guid postIdd)) return BadRequest("Invalid id format");
         var commentServiceUrl = $"http://localhost:5055/api/comment/{postId}";
 
-        var result = await _repository.GetPostsAsync(postId);
+        var result = await _repository.GetPostAsync(postId);
 
         if (result == null) 
         {
@@ -50,21 +50,29 @@ public class PostsController : ControllerBase
         var response = await http.GetAsync(commentServiceUrl);
 
 
+        var postVM = new PostViewModel()
+        {
+            PostId = result.PostId.ToString(),
+            Name = result.Name,
+            Content = result.Content,
+
+        };
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("Success response");
             var resString = await response.Content.ReadAsStringAsync();
             _logger.LogInformation(resString);
+
         
             if (resString != null)
             {
                 var comments = JsonConvert.DeserializeObject<CommentViewModel>(resString);
-                result.Comments = comments?.Comments;
+                postVM.Comments = comments?.Comments;
             }
         }
 
         // Have to include blog posts
-        return Ok(result);
+        return Ok(postVM);
     }
 
     [HttpPost]
@@ -72,14 +80,14 @@ public class PostsController : ControllerBase
     {
         if (command == null) return BadRequest("missing data");
         _logger.LogInformation("Sending command CreatePostCommand");
-        bool commandResult = await _mediator.Send(command);
-        
-        if (!commandResult)
-        {
-            return BadRequest();
-        }
+        var createdPost = await _mediator.Send(command);
 
-        return Ok("created");
+        if (createdPost == null) 
+        {
+            return BadRequest("something went wrong");
+        }
+        
+        return Ok(createdPost);
     }
 
     // update post  and comment

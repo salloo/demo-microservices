@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using MediatR;
+using PostService.Model;
 
 namespace PostManagementService.Commands;
 
-public class CreatePostCommand: IRequest<bool>
+public class CreatePostCommand: IRequest<Post>
 {
     [Required]
     [DataMember]

@@ -2,7 +2,8 @@ using PostService.Model;
 
 namespace PostManagementService.Repository;
 
-public interface IPostRepository
+public interface IPostRepository: IRepository<Post>
 {
-    Task<PostViewModel> GetPostsAsync(string postId);
+    Task<Post> GetPostAsync(string Id);
+    Post CreatePost(Post post);
 }
