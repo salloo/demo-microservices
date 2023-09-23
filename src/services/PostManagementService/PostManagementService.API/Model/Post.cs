@@ -39,7 +39,7 @@ public class PostViewModel
 public class CommentViewModel
 {
 
-    public Guid PostId { get; set; }
+    public string PostId { get; set; }
     public List<string> Comments { get; set; }
 
 }

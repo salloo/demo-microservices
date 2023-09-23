@@ -32,7 +32,7 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> GetPostsByIdAsync(string postId)    
     {
         if (!Guid.TryParse(postId, out Guid postIdd)) return BadRequest("Invalid id format");
-        var commentServiceUrl = $"http://localhost:5055/api/comment/{postId}";
+        var commentServiceUrl = $"http://localhost:5055/api/comments/{postId}";
 
         var result = await _repository.GetPostAsync(postId);
 
@@ -71,7 +71,6 @@ public class PostsController : ControllerBase
             }
         }
 
-        // Have to include blog posts
         return Ok(postVM);
     }
 

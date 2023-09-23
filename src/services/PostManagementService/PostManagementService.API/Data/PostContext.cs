@@ -41,16 +41,13 @@ public class PostContext : DbContext, IUnitOfWork
     }
 
     public class CatalogContextDesignFactory : IDesignTimeDbContextFactory<PostContext>
-{
-    public PostContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<PostContext>()
-            .UseSqlServer("Server=127.0.0.1,5433;Initial Catalog=PostDB;User Id=sa;Password=Pass@word;Encrypt=false");
+        public PostContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<PostContext>()
+                .UseSqlServer("Server=127.0.0.1,5433;Initial Catalog=PostDB;User Id=sa;Password=Pass@word;Encrypt=false");
 
-        return new PostContext(optionsBuilder.Options);
+            return new PostContext(optionsBuilder.Options);
+        }
     }
-
-        
-    }
-
 }
