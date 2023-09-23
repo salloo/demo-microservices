@@ -29,7 +29,7 @@ public class CommentsController: ControllerBase
     public async Task<IActionResult> GetCommentByPostId(string postId)
     {
         if (postId == null) return BadRequest();
-        var result = _repository.GetComments(postId);
+        var result = await _repository.GetCommentsAsync(postId);
         if (!result.Comments.Any()) 
             return NotFound();
         
@@ -39,13 +39,13 @@ public class CommentsController: ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand command)
     {
-        if (command == null) return BadRequest("missing data");
+        if (command == null) return BadRequest("Invalid data");
         _logger.LogInformation("Sending create comment command");
         var created = await _mediator.Send(command);
 
         if (!created)
         {
-            return BadRequest("something went wrong");
+            return BadRequest("not able to create comment");
         }
 
         return Accepted();
@@ -54,6 +54,16 @@ public class CommentsController: ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentCommand command)
     {
-        return Ok("Todo");
+        if (command == null) return BadRequest("Invalid data");
+        _logger.LogInformation("Sending update comment command");
+
+        var result = await _mediator.Send(command);
+
+        if (!result)
+        {
+            return BadRequest("not able to update comment");
+        }
+        
+        return Accepted();
     }
 }
