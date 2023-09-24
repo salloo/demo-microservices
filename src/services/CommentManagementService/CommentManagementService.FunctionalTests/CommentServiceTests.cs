@@ -40,7 +40,6 @@ public class CommentServiceTests
         var s = await response.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-
     string BuildComment()
     {
         var comment = new {
