@@ -9,6 +9,7 @@ metadata:
     io.kompose.service: commentservice-api
   name: commentservice-api
 spec:
+  type: LoadBalancer
   ports:
     - name: "5055"
       port: 5055

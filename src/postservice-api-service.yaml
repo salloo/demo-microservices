@@ -9,6 +9,7 @@ metadata:
     io.kompose.service: postservice-api
   name: postservice-api
 spec:
+  type: LoadBalancer
   ports:
     - name: "5429"
       port: 5429

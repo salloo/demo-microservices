@@ -34,7 +34,7 @@ spec:
               value: "5"
             - name: EventBus__SubscriptionClientName
               value: Post
-          image: postservice-api
+          image: salmanshahid/postservice
           name: postservice-api
           ports:
             - containerPort: 80

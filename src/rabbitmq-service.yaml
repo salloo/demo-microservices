@@ -9,6 +9,7 @@ metadata:
     io.kompose.service: rabbitmq
   name: rabbitmq
 spec:
+  type: LoadBalancer
   ports:
     - name: "5672"
       port: 5672
