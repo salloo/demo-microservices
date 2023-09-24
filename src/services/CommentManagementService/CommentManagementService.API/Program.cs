@@ -1,6 +1,8 @@
+using System.Threading.RateLimiting;
 using CommentManagementService.Events;
 using CommentManagementService.Repository;
 using Empower.Infrastructure.EventBus.Interfaces;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Services.Common;
@@ -32,6 +34,21 @@ builder.Services.AddDbContext<CommentContext>(options => {
 
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    rateLimiterOptions.RejectionStatusCode = 429;
+    rateLimiterOptions.AddSlidingWindowLimiter("sliding", options =>
+    {
+        options.PermitLimit = 10;
+        options.Window = TimeSpan.FromSeconds(10);
+        options.SegmentsPerWindow = 2;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 5;
+    });
+});
+
+
+
 var app = builder.Build();
 app.UseServiceDefaults();
 
@@ -48,6 +65,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseRateLimiter();
 app.MapControllers();
 
 eventBus.Subscribe<DeletePostEvent, IIntegrationEventHandler<DeletePostEvent>>();

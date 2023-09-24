@@ -5,12 +5,14 @@ using CommentManagementService.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CommentManagementService.Controllers;
 
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("sliding")]
 public class CommentsController: ControllerBase
 {
     private readonly IMediator _mediator;

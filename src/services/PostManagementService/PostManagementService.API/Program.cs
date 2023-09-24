@@ -1,5 +1,7 @@
 
+using System.Threading.RateLimiting;
 using Empower.Infrastructure.EventBus.Interfaces;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using PostManagementService.Events;
 using PostManagementService.Repository;
@@ -34,6 +36,19 @@ builder.Services.AddDbContext<PostContext>(options => {
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    rateLimiterOptions.RejectionStatusCode = 429;
+    rateLimiterOptions.AddSlidingWindowLimiter("sliding", options =>
+    {
+        options.PermitLimit = 10;
+        options.Window = TimeSpan.FromSeconds(10);
+        options.SegmentsPerWindow = 2;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 5;
+    });
+});
+
 var app = builder.Build();
 
 app.UseServiceDefaults();
@@ -49,7 +64,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseRateLimiter();
 app.MapControllers();
+
 
 using (var scope = app.Services.CreateScope())
 {

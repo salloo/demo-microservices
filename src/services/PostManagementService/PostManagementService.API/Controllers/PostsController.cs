@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.RateLimiting;
 using Newtonsoft.Json;
 using PostManagementService.Commands;
 using PostManagementService.Repository;
@@ -12,6 +13,7 @@ namespace PostManagementService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("sliding")]
 public class PostsController : ControllerBase
 {
     private readonly IMediator _mediator;
